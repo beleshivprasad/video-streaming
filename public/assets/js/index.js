@@ -38,7 +38,7 @@ function bitrateSelector(player, logger) {
     qualityMenuButton.addClass("custom-menu-button");
 
     document.querySelector(".custom-menu-button .vjs-menu-button").innerHTML =
-      "<b>Quality</b>";
+      "<b>Auto</b>";
 
     const qualityMenu = qualityMenuButton.addChild("Menu");
 
@@ -48,11 +48,17 @@ function bitrateSelector(player, logger) {
         label: `${qualityOption.height}p`,
       });
 
+      menuItem.addClass(`custom-menuItem quality-${qualityOption.height}`);
+
       menuItem.on("click", function (e) {
         const option = getStreamBitrateOptionIndex(
           e.target.innerText.replace("p", "")
         );
         updateStreamBitrate(option);
+
+        document.querySelector(
+          ".custom-menu-button .vjs-menu-button"
+        ).innerHTML = `<b>${e.target.innerText}</b>`;
 
         qualityMenu.addClass("vjs-hidden");
         setTimeout(() => {
