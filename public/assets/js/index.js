@@ -1,6 +1,6 @@
 window.videojs = videojs;
 const video = "tears_of_steel";
-const url = `assets/videos/${video}/stream_data/manifest.mpd`;
+const url = `assets/videos/tears_of_steel/stream_data/manifest.mpd`;
 
 function bitrateSelector(player, logger) {
   const streamOptions = [];
@@ -21,9 +21,7 @@ function bitrateSelector(player, logger) {
   }
 
   function getStreamBitrateOptionIndex(height) {
-    const bitrateOptionIndex = streamOptions.findIndex(
-      (option) => option.height == height
-    );
+    const bitrateOptionIndex = streamOptions.findIndex(option => option.height == height);
     if (logger) console.warn("selectedBitrateOption", bitrateOptionIndex);
 
     return bitrateOptionIndex;
@@ -32,28 +30,25 @@ function bitrateSelector(player, logger) {
   function createQualitySelectorMenu(streamOptions) {
     const qualityMenuButton = player.controlBar.addChild("MenuButton", {
       text: "Quality",
-      button: true,
+      button: true
     });
 
     qualityMenuButton.addClass("custom-menu-button");
 
-    document.querySelector(".custom-menu-button .vjs-menu-button").innerHTML =
-      "<b>Auto</b>";
+    document.querySelector(".custom-menu-button .vjs-menu-button").innerHTML = "<b>Auto</b>";
 
     const qualityMenu = qualityMenuButton.addChild("Menu");
 
     for (let i = 0; i < streamOptions.length; i++) {
       const qualityOption = streamOptions[i];
       const menuItem = qualityMenu.addChild("MenuItem", {
-        label: `${qualityOption.height}p`,
+        label: `${qualityOption.height}p`
       });
 
       menuItem.addClass(`custom-menuItem quality-${qualityOption.height}`);
 
       menuItem.on("click", function (e) {
-        const option = getStreamBitrateOptionIndex(
-          e.target.innerText.replace("p", "")
-        );
+        const option = getStreamBitrateOptionIndex(e.target.innerText.replace("p", ""));
         updateStreamBitrate(option);
 
         document.querySelector(
@@ -70,13 +65,12 @@ function bitrateSelector(player, logger) {
 
   qualityLevels.on("addqualitylevel", function (qlevent) {
     const qualityLevel = qlevent.qualityLevel;
-    if (logger)
-      console.info(`Found Bitrate Option=> ${qualityLevel.bitrate / 1000}kbps`);
+    if (logger) console.info(`Found Bitrate Option=> ${qualityLevel.bitrate / 1000}kbps`);
 
     streamOptions.push({
       bitrate: qualityLevel.bitrate,
       height: qualityLevel.height,
-      width: qualityLevel.width,
+      width: qualityLevel.width
     });
   });
 
@@ -95,10 +89,10 @@ try {
     playbackRates: [0.5, 1, 1.5, 2],
     controlBar: {
       audioTrackButton: false,
-      subsCapsButton: false,
+      subsCapsButton: false
     },
     autoplay: false,
-    qualityLevels: {},
+    qualityLevels: {}
   });
 
   player.src({ src: url, type: "application/dash+xml" });
