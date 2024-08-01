@@ -1,0 +1,138 @@
+1. https://stackoverflow.com/questions/76086383/iterate-over-json-data-and-show-html-code-according-to-that
+ans: When you map over all questions everytime you will get one of below two question object as per your data-set.
+```
+  question = {
+      questionText: "Second",
+      answerOptions: [
+        { answerText: "One", value: 1 },
+        { answerText: "Two", value: 2 },
+        { answerText: "Three", value: 3 },
+        { answerText: "Four", value: 4 },
+      ],
+      answerType: "radio",
+    }
+
+```
+  OR
+```
+  question = {
+      questionText: "Third Question",
+      answerType: "text",
+    }
+
+```
+So you need to check if question's answerType is **radio** or **text**.
+accordingly you need to put condition for this.
+
+(Note* 
+ 1. It will be better to have a separate component returning rendered question and options when you pass this question object data as prop in case of multiple answer types.
+ 2. Always provide key to html element that you are rendering inside map for any other loop. It will help React differentiate and distinguish elements from each other, increasing its performance when diffing between the virtual and real DOM.
+)
+
+So your updated component something like this.
+
+
+
+```
+
+
+import React, { useState } from "react";
+
+const MapSurvey = () => {
+  const [answers, setAnswers] = useState({});
+
+  const handleChange = e => {
+    setAnswers(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setTimeout(() => console.log(answers), 1000);
+  };
+
+  const questions = [
+    {
+      questionText: "First Q",
+      answerOptions: [
+        { answerText: "One", value: 1 },
+        { answerText: "Two", value: 2 },
+        { answerText: "Three", value: 3 },
+        { answerText: "Four", value: 4 },
+        { answerText: "Five", value: 5 }
+      ],
+      answerType: "radio"
+    },
+    {
+      questionText: "Second",
+      answerOptions: [
+        { answerText: "One", value: 1 },
+        { answerText: "Two", value: 2 },
+        { answerText: "Three", value: 3 },
+        { answerText: "Four", value: 4 }
+      ],
+      answerType: "radio"
+    },
+    {
+      questionText: "Third",
+      answerOptions: [
+        { answerText: "One", value: 1 },
+        { answerText: "Two", value: 2 },
+        { answerText: "Three", value: 3 },
+        { answerText: "Four", value: 4 },
+        { answerText: "Five", value: 5 }
+      ],
+      answerType: "radio"
+    },
+    {
+      questionText: "FirstInput",
+      answerType: "text"
+    }
+  ];
+  return (
+    <div className="w-full py-[2rem] px-4 bg-white">
+      <div>
+        <form>
+          {questions.map((question, idx) => (
+            <div key={`question-no-${idx}`} className="flex flex-col p-4 my-4">
+              <span className="text-lg font-bold">{question.questionText}</span>
+
+              {question.answerType === "radio" ? (
+                <div className="flex gap-2">
+                  {question.answerOptions.map((option, optionIdx) => (
+                    <div key={`question_${idx}_option_${optionIdx}`} className="mt-3 mb-3">
+                      <input
+                        name={`question_${idx}`}
+                        type={question.answerType}
+                        id={`question_${optionIdx}`}
+                        onChange={handleChange}
+                        value={option.value}
+                      />
+                      <label
+                        htmlFor={`question_${idx}`}
+                        className="px-2 py-1 rounded-lg flex justify-left items-center font-medium text-black checked:text-white w-full sm:w-6/12 h-10"
+                      >
+                        {option.answerText}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <input
+                    name={`question_${idx}`}
+                    type={question.answerType}
+                    id={`question_${idx}`}
+                    onChange={handleChange}
+                  />
+                </>
+              )}
+            </div>
+          ))}
+        </form>
+
+        <button>Submit</button>
+      </div>
+    </div>
+  );
+};
+
+export default MapSurvey;
+
+```
+2. 

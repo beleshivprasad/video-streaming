@@ -1,0 +1,25 @@
+{
+  "name": "josh-training",
+  "version": "1.0.0",
+  "description": "nodejs and its frameworks training",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express"
+  ],
+  "author": "Shivprasad",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "redis": "^4.6.12",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
